@@ -13,7 +13,6 @@ QA Automation Frameworks
 
 Стиль: Page Object Model + модульная архитектура
 
-Под руководством QA-инженера с 10+ лет опыта
 
 ⚠ Важно: в репозитории хранятся только тесты и фреймворки.
 Бинарные файлы и файлы инициализации отсутствуют.
@@ -50,6 +49,7 @@ Fixture: [conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/con
 Зависимости: [requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
 
 Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
+
 
 
 
