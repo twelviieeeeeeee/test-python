@@ -1,9 +1,8 @@
-from http.client import responses
-
 import requests
 import pytest
 import allure
 from faker import Faker
+from helpers.searchID import SearchAPI
 
 class ApiClient:
     BASE_URL = "https://automationexercise.com/api"
@@ -18,242 +17,174 @@ class ApiClient:
     def put(self, endpoint, **kwargs):
         return requests.put(f"{self.BASE_URL}/{endpoint}", **kwargs)
 
-    @allure.step("GET /productsList и проверка ответа")
+    def delete(self, endpoint, **kwargs):
+        return requests.delete(f"{self.BASE_URL}/{endpoint}", **kwargs)
+
+    # ---------- PRODUCTS ----------
+    @allure.step("GET /productsList — получение списка продуктов")
     def verify_get_products_list(self):
         response = self.get("productsList")
-        assert response.status_code == 200, f"Ожидали 200, а получили {response.status_code}"
-        data = None
+        assert response.status_code == 200, f"Ожидали 200, получили {response.status_code}"
         try:
             data = response.json()
         except ValueError:
-            pytest.fail("Ответ не является JSON")
-        assert "products" in data, "Ключ 'products' отсутствует"
+            pytest.fail("Ответ не JSON")
+        assert "products" in data, "Нет ключа 'products'"
         assert isinstance(data["products"], list), "'products' должен быть списком"
 
-    @allure.step("POST /productsList и проверка, что метод не поддерживается")
+    @allure.step("POST /productsList — проверка, что метод не поддерживается")
     def verify_post_products_list_returns_405(self):
-        response = self.post("productsList", json={})
-        assert response.status_code == 405 or "not supported" in response.text.lower(), \
-            f"Ожидали 405 или текст ошибки, получили: {response.status_code}, тело: {response.text}"
+        response = self.post("productsList")
+        assert response.status_code == 200, f"Ожидали 200, получили {response.status_code}"
+        assert "405" in response.text, f"Ожидали '405' в ответе, получили {response.text}"
+        assert "This request method is not supported." in response.text, \
+            "Нет сообщения о неподдерживаемом методе"
 
-    @allure.step("GET /brandsList и проверка структуры")
+    # ---------- BRANDS ----------
+    @allure.step("GET /brandsList — получение списка брендов и поиск ID")
     def verify_get_all_brands_list(self):
         response = self.get("brandsList")
-        assert response.status_code == 200, f"Ожидали 200, а получили {response.status_code}"
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail("Ответ не является JSON")
-        assert "brands" in data, "Ключ 'brands' отсутствует"
-        assert isinstance(data["brands"], list), "'brands' должен быть списком"
+        assert response.status_code == 200, f"Ожидали 200, получили {response.status_code}"
 
-    @allure.step("PUT /brandsList и проверка ошибки в теле ответа (responseCode 405)")
-    def verify_put_to_all_brands_list_returns_405(self):
-        response = self.put("brandsList")
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail(f"Ответ не является JSON. Текст: {response.text}")
+        # Используем SearchAPI
+        search_instance = SearchAPI(response.text)
+        found_ids = search_instance.search_id()
+        allure.attach(str(found_ids), "Найденные ID брендов", allure.attachment_type.TEXT)
 
-        assert str(data.get("responseCode")) == "405", \
-            f"Ожидали responseCode 405 в теле, получили: {data.get('responseCode')}, тело: {data}"
-
-        assert "not supported" in data.get("message", "").lower(), \
-            f"Ожидали сообщение об ошибке, получили: {data}"
-
-    @allure.step("POST /searchProduct с валидным параметром")
-    def verify_search_product(self, search_product):
-        payload = {'search_product': search_product}
-        response = self.post("searchProduct", data=payload)
-        assert response.status_code == 200, f"Ожидали 200, а получили {response.status_code}"
-        data = response.json()
-        assert "products" in data, "Ключ 'products' отсутствует"
-        assert isinstance(data["products"], list), "'products' должен быть списком"
-
-    @allure.step("POST /searchProduct без параметров — проверка ошибки в теле (missing param)")
-    def verify_post_without_search_product_param(self):
-        response = self.post("searchProduct")
-
-        try:
-            data = response.json()
-            code = data.get("responseCode")
-        except ValueError:
-            data = None
-            code = None
-
-        assert str(code) == "400" or "search_product parameter is missing" in response.text.lower(), \
-            f"Ожидали ошибку 400 или текст об отсутствии параметра, получили: {response.text}"
-
-    @allure.step("POST /verifyLogin — проверка успешного логина")
-    def verify_login_with_valid_details(self, email, password):
-        response = requests.post(f"{self.BASE_URL}/verifyLogin", data={
-            "email": email,
-            "password": password
-        })
-
-        data = response.json()
-
-        assert data.get("responseCode") == 200, \
-            f"VerifyLogin: ожидали responseCode 200, получили {data.get('responseCode')}"
-
-        assert "user exists" in data.get("message", "").lower(), \
-            f"VerifyLogin: ожидали 'User exists!', получили: {data.get('message')}"
-
-    @allure.step("POST /createAccount — создание нового пользователя с фейковыми данными")
-    def post_create_account(self):
-        name = self.fake.first_name()
-        email = self.fake.unique.email()
-        password = self.fake.password()
-        title = self.fake.random_element(elements=("Mr", "Mrs", "Miss"))
-        birth_date = str(self.fake.random_int(min=1, max=28))
-        birth_month = self.fake.month_name()
-        birth_year = str(self.fake.random_int(min=1950, max=2005))
-        firstname = self.fake.first_name()
-        lastname = self.fake.last_name()
-        company = self.fake.company()
-        address1 = self.fake.street_address()
-        address2 = self.fake.secondary_address()
-        country = self.fake.country()
-        zipcode = self.fake.postcode()
-        state = self.fake.state()
-        city = self.fake.city()
-        mobile_number = self.fake.phone_number()
-
-        response = requests.post(f"{self.BASE_URL}/createAccount", data={
-            "name": name,
-            "email": email,
-            "password": password,
-            "title": title,
-            "birth_date": birth_date,
-            "birth_month": birth_month,
-            "birth_year": birth_year,
-            "firstname": firstname,
-            "lastname": lastname,
-            "company": company,
-            "address1": address1,
-            "address2": address2,
-            "country": country,
-            "zipcode": zipcode,
-            "state": state,
-            "city": city,
-            "mobile_number": mobile_number
-        })
-
-        data = None
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail(f"CreateAccount: ответ не JSON. Текст: {response.text}")
-
-        assert data.get("responseCode") == 201, \
-            f"CreateAccount: ожидали responseCode 201, получили {data.get('responseCode')}"
-
-        assert "user created" in data.get("message", "").lower(), \
-            f"CreateAccount: ожидали 'User created!', получили: {data.get('message')}"
-        return email, password
-
-    @allure.step("DELETE /deleteAccount — удаление пользователя")
-    def delete_account(self, email, password):
-        response = requests.delete(f"{self.BASE_URL}/deleteAccount", data={
-            "email": email,
-            "password": password
-        })
-        data = None
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail(f"DeleteAccount: ответ не JSON. Текст: {response.text}")
-
-        assert data.get("responseCode") == 200, \
-            f"DeleteAccount: ожидали responseCode 200, получили {data.get('responseCode')}"
-
-        assert "account deleted" in data.get("message", "").lower(), \
-            f"DeleteAccount: ожидали 'Account deleted!', получили: {data.get('message')}"
-
-        return response
-
-    @allure.step("POST /verifyLogin — проверка отсутствия email")
-    def verify_login_without_email(self, password):
-        response = requests.post(f"{self.BASE_URL}/verifyLogin", data={
-            "password": password
-        })
-        data = None
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail(f"VerifyLogin: ответ не JSON. Текст: {response.text}")
-
-        assert data.get("responseCode") == 400, \
-            f"VerifyLogin: ожидали responseCode 400, получили {data.get('responseCode')}"
-
-        assert "parameter is missing" in data.get("message", "").lower(), \
-            f"VerifyLogin: ожидали сообщение об отсутствии параметров, получили: {data.get('message')}"
-
-    @allure.step("POST /verifyLogin — проверка неверного метода")
-    def verify_login_wrong_method(self, email, password):
-        response = requests.delete(f"{self.BASE_URL}/verifyLogin", data={
-            "email": email,
-            "password": password
-        })
-
-        data = response.json()
-
-        assert data.get("responseCode") == 405, \
-            f"VerifyLogin: ожидали responseCode 405, получили {data.get('responseCode')}"
-
-        assert "This request method is not supported." in data.get("message", ""), \
-            f"VerifyLogin: ожидали 'This request method is not supported!', получили: {data.get('message')}"
-
-    @allure.step("POST /verifyLogin проверка невалидные данные")
-    def verify_login_with_wrong_credentials(self, email, password):
-        response = requests.post(f"{self.BASE_URL}/verifyLogin", data={
-            "email": email,
-            "password": password
-        })
-        data = None
         try:
             data = response.json()
         except ValueError:
             pytest.fail("Ответ не JSON")
 
-        assert data.get("responseCode") == 404, \
-            f"VerifyLogin: ожидали responseCode 404, получили {data.get('responseCode')}"
+        assert "brands" in data, "Нет ключа 'brands'"
+        assert isinstance(data["brands"], list), "'brands' должен быть списком"
 
-        assert "user not found" in data.get("message", "").lower(), \
-            f"VerifyLogin: ожидали 'User not found!', получили: {data.get('message')}"
-
-    @allure.step("PUT /updateAccount — обновление данных пользователя")
-    def put_update_account(self, **kwargs):
-        response = requests.put(f"{self.BASE_URL}/updateAccount", data=kwargs)
-        data = None
+    @allure.step("PUT /brandsList — проверка 405 в теле ответа")
+    def verify_put_to_all_brands_list_returns_405(self):
+        response = self.put("brandsList")
         try:
             data = response.json()
         except ValueError:
-            pytest.fail(f"UpdateAccount: ответ не JSON. Текст: {response.text}")
+            pytest.fail(f"Ответ не JSON. Текст: {response.text}")
 
-        assert data.get("responseCode") == 200, \
-            f"UpdateAccount: ожидали responseCode 200, получили {data.get('responseCode')}"
+        assert str(data.get("responseCode")) == "405", f"Ожидали 405, получили {data.get('responseCode')}"
+        assert "not supported" in data.get("message", "").lower(), \
+            f"Ожидали сообщение об ошибке, получили: {data}"
 
-        assert "user updated" in data.get("message", "").lower(), \
-            f"UpdateAccount: ожидали 'User updated!', получили: {data.get('message')}"
+    # ---------- SEARCH ----------
+    @allure.step("POST /searchProduct — поиск продукта")
+    def verify_search_product(self, search_product):
+        payload = {'search_product': search_product}
+        response = self.post("searchProduct", data=payload)
+        assert response.status_code == 200, f"Ожидали 200, получили {response.status_code}"
+        data = response.json()
+        assert "products" in data, "Нет ключа 'products'"
+        assert isinstance(data["products"], list), "'products' должен быть списком"
 
+    @allure.step("POST /searchProduct без параметра — проверка ошибки")
+    def verify_post_without_search_product_param(self):
+        response = self.post("searchProduct")
+        try:
+            data = response.json()
+            code = data.get("responseCode")
+        except ValueError:
+            pytest.fail("Ответ не JSON")
+
+        assert str(code) == "400" or "search_product parameter is missing" in response.text.lower(), \
+            f"Ожидали ошибку 400 или сообщение об отсутствии параметра, получили: {response.text}"
+
+    # ---------- USERS ----------
+    @allure.step("POST /createAccount — создание пользователя")
+    def post_create_account(self):
+        payload = {
+            "name": self.fake.first_name(),
+            "email": self.fake.unique.email(),
+            "password": self.fake.password(),
+            "title": self.fake.random_element(elements=("Mr", "Mrs", "Miss")),
+            "birth_date": str(self.fake.random_int(min=1, max=28)),
+            "birth_month": self.fake.month_name(),
+            "birth_year": str(self.fake.random_int(min=1950, max=2005)),
+            "firstname": self.fake.first_name(),
+            "lastname": self.fake.last_name(),
+            "company": self.fake.company(),
+            "address1": self.fake.street_address(),
+            "address2": self.fake.secondary_address(),
+            "country": self.fake.country(),
+            "zipcode": self.fake.postcode(),
+            "state": self.fake.state(),
+            "city": self.fake.city(),
+            "mobile_number": self.fake.phone_number(),
+        }
+
+        response = self.post("createAccount", data=payload)
+        try:
+            data = response.json()
+        except ValueError:
+            pytest.fail(f"Ответ не JSON. Текст: {response.text}")
+
+        assert data.get("responseCode") == 201, f"Ожидали 201, получили {data.get('responseCode')}"
+        assert "user created" in data.get("message", "").lower(), "Нет сообщения 'User created!'"
+        return payload["email"], payload["password"]
+
+    @allure.step("DELETE /deleteAccount — удаление пользователя")
+    def delete_account(self, email, password):
+        response = self.delete("deleteAccount", data={
+            "email": email,
+            "password": password
+        })
+        try:
+            data = response.json()
+        except ValueError:
+            pytest.fail(f"Ответ не JSON. Текст: {response.text}")
+
+        assert data.get("responseCode") == 200, f"Ожидали 200, получили {data.get('responseCode')}"
+        assert "account deleted" in data.get("message", "").lower(), \
+            "Нет сообщения 'Account deleted!'"
         return response
 
-    @allure.step("GET /getUserDetailByEmail — детали пользователя по email")
+    @allure.step("POST /verifyLogin — успешный логин")
+    def verify_login_with_valid_details(self, email, password):
+        response = self.post("verifyLogin", data={"email": email, "password": password})
+        data = response.json()
+        assert data.get("responseCode") == 200, f"Ожидали 200, получили {data.get('responseCode')}"
+        assert "user exists" in data.get("message", "").lower(), "Нет сообщения 'User exists!'"
+
+    @allure.step("POST /verifyLogin без email — проверка ошибки")
+    def verify_login_without_email(self, password):
+        response = self.post("verifyLogin", data={"password": password})
+        data = response.json()
+        assert data.get("responseCode") == 400, f"Ожидали 400, получили {data.get('responseCode')}"
+        assert "parameter is missing" in data.get("message", "").lower(), \
+            "Нет сообщения о пропущенном параметре"
+
+    @allure.step("DELETE /verifyLogin — проверка неверного метода")
+    def verify_login_wrong_method(self, email, password):
+        response = self.delete("verifyLogin", data={"email": email, "password": password})
+        data = response.json()
+        assert data.get("responseCode") == 405, f"Ожидали 405, получили {data.get('responseCode')}"
+        assert "not supported" in data.get("message", "").lower(), "Нет сообщения 'not supported'"
+
+    @allure.step("POST /verifyLogin с неверными данными")
+    def verify_login_with_wrong_credentials(self, email, password):
+        response = self.post("verifyLogin", data={"email": email, "password": password})
+        data = response.json()
+        assert data.get("responseCode") == 404, f"Ожидали 404, получили {data.get('responseCode')}"
+        assert "user not found" in data.get("message", "").lower(), "Нет сообщения 'User not found!'"
+
+    @allure.step("PUT /updateAccount — обновление пользователя")
+    def put_update_account(self, **kwargs):
+        response = self.put("updateAccount", data=kwargs)
+        data = response.json()
+        assert data.get("responseCode") == 200, f"Ожидали 200, получили {data.get('responseCode')}"
+        assert "user updated" in data.get("message", "").lower(), "Нет сообщения 'User updated!'"
+        return response
+
+    @allure.step("GET /getUserDetailByEmail — получение пользователя по email")
     def verify_get_user_detail_by_email(self, email):
-        response = requests.get(f"{self.BASE_URL}/getUserDetailByEmail", params={"email": email})
-
-        assert response.status_code == 200, f"Ожидали 200, а получили {response.status_code}"
-
-        try:
-            data = response.json()
-        except ValueError:
-            pytest.fail("Ответ не является JSON")
-
-        assert data.get("responseCode") == 200, \
-            f"Ожидали responseCode 200, получили {data.get('responseCode')}"
-        assert "user" in data, "Нет ключа 'user' в ответе"
+        response = self.get("getUserDetailByEmail", params={"email": email})
+        assert response.status_code == 200, f"Ожидали 200, получили {response.status_code}"
+        data = response.json()
+        assert data.get("responseCode") == 200, f"Ожидали 200, получили {data.get('responseCode')}"
+        assert "user" in data, "Нет ключа 'user'"
         assert isinstance(data["user"], dict), "'user' должен быть словарём"
-
         return data
-
