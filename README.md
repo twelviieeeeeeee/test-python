@@ -1,6 +1,37 @@
 # тест
 
 
+В репозитории представлены автотесты и примеры кода на Python , реализованные с использованием Selenium, Pytest и других инструментов тестирования.
+Проекты разработаны в процессе обучения под руководством опытного QA-инженера (10+ лет опыта в отрасли) и демонстрируют умение применять теоретические знания на практике, находить и воспроизводить баги, а также автоматизировать тестовые сценарии.
+
+Здесь вы найдете: полностью,написанный с нуля фреймворк под Api&UI запросы сделанные на сайте Automation Exercise, то как я строю докер файл с ямл Гитлаба, зависимости и фикстуру,а так же файлы утилей и некоторые сетапы.
+!В ЭТОМ РЕПОЗИТОРИИ ХРАНЯТЬСЯ ЛИШЬ ТЕСТЫ И ИХ ФРЕЙМВОРКИ С ПЕРЕЧИСЛЕННЫМ ПОСЛЕ ЗАПЯТОЙ,НЕ ХРАНЯТСЯ БИНАРНЫЕ ФАЙЛЫ И ФАЙЛЫ ИНИЦИАЛИЗАЦИИ!
+
+Файлы фреймворков Ui: Яндекс: 
+https://github.com/twelviieeeeeeee/test-python/blob/main/ya_page.py
+Фреймворк под сайт: https://github.com/twelviieeeeeeee/test-python/blob/main/bibki_page.py
+Файлы фреймворков API: https://github.com/twelviieeeeeeee/test-python/blob/main/biba_framework.py
+Сами тесты: Яндекс: 
+https://github.com/twelviieeeeeeee/test-python/blob/main/script.py
+Тесты с сайта по автоматизации: https://github.com/twelviieeeeeeee/test-python/blob/main/test_automation_exercise.py
+Тесты на API: https://github.com/twelviieeeeeeee/test-python/blob/main/api_requests_test.py
+Мой докер: 
+https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml
+https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile
+Мой Гитлаб файл:
+https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml
+Моя фикстура: 
+https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py
+Мои зависимости:
+https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt
+Моя утилита:
+https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py
+Мои сетапы:
+https://github.com/twelviieeeeeeee/test-python/blob/main/setup.py
+https://github.com/twelviieeeeeeee/test-python/blob/main/pytest.ini
+https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt
+https://github.com/twelviieeeeeeee/test-python/blob/main/package.json
+https://github.com/twelviieeeeeeee/test-python/blob/main/package-lock.json
 
 ## Getting started
 
@@ -91,3 +122,4 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
