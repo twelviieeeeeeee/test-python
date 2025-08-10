@@ -53,6 +53,9 @@ Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main
 
 Helpers: [helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
 
+Structure: [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
+
+
 
 
 
