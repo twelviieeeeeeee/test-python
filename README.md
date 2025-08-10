@@ -14,7 +14,7 @@ QA Automation Frameworks
 Стиль: Page Object Model + модульная архитектура
 
 
-⚠ Важно: в репозитории хранятся только тесты и фреймворки.
+⚠ Важно: в репозитории хранятся только тесты и фреймворки.Всего в репозитории находится 48 тестов, 34 из которых на UI и 14 на Api
 Бинарные файлы и файлы инициализации отсутствуют.
 
 📂 Структура репозитория
@@ -49,6 +49,7 @@ Fixture: [conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/con
 Зависимости: [requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
 
 Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
+
 
 
 
