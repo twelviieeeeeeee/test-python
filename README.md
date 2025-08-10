@@ -5,7 +5,7 @@ QA Automation Frameworks
 📌 Описание
 Язык: Python
 
-Инструменты: Selenium, Pytest, Docker, GitLab CI/CD
+Инструменты: Selenium, Pytest, Docker, GitLab CI/CD, Faker, Requests, Allure
 
 Тип тестирования: UI и API
 
@@ -38,6 +38,7 @@ Gitlab CI\CD: [gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blo
 Fixture: [conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py)
 Зависимости: [requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
 Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
+
 
 
 
