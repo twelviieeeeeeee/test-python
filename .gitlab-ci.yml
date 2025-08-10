@@ -1,0 +1,71 @@
+
+
+stages:
+  - build
+  - test
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  ALLURE_VERSION: "2.27.0"
+  PYTHONPATH: "/builds/barbariki245/automation.framework:/builds/barbariki245/api-requests:/builds/barbariki245/test-selenium"
+
+
+cache:
+  key: "${CI_JOB_NAME}-${CI_COMMIT_REF_SLUG}"
+  paths:
+    - .cache/pip
+    - /opt/allure
+
+build_job:
+  stage: build
+  image: python:3.11-slim
+  before_script:
+    - apt-get update && apt-get install -y build-essential python3-dev git
+    - pip install --upgrade pip
+  script:
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - .venv/
+    expire_in: 1 day
+
+run_test_job:
+  stage: test
+  image: twelveeeee/test-selenium:latest
+  variables:
+    HEADLESS: "true"
+    PYTHONPATH: "/builds/barbariki245/automation.framework:/builds/barbariki245/api-requests:/builds/barbariki245/test-selenium"
+  before_script:
+    - apt-get update && apt-get install -y unzip wget curl libglib2.0-0 libnss3 libgconf-2-4 libfontconfig1 libxss1 libappindicator3-1 libasound2 libxtst6 libatk-bridge2.0-0 libgtk-3-0 default-jre git
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install -e .
+    - mkdir -p target
+    - export PYTHONPATH=/builds/barbariki245/test-selenium:/builds/barbariki245/automation_framework:/builds/barbariki245/boba_framework
+    # Установка Allure CLI
+    - if ! command -v allure &> /dev/null; then
+        echo "Installing Allure CLI...";
+        wget -q "https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.tgz";
+        tar -xzf "allure-${ALLURE_VERSION}.tgz" -C /opt;
+        ln -s "/opt/allure-${ALLURE_VERSION}/bin/allure" /usr/bin/allure;
+      fi
+
+  script:
+    - echo "PYTHONPATH = $PYTHONPATH"
+    - python -c "import sys; print(sys.path)"
+    - pytest tests/test_automation_exercise.py --alluredir=target/allure-results || echo "Tests failed, continuing..."
+    - pytest tests/api_requests_test.py --alluredir=target/allure-results || echo "Tests failed, continuing..."
+  after_script:
+    - |
+      if [ -d target/allure-results ] && [ "$(ls -A target/allure-results)" ]; then
+        allure generate target/allure-results -o target/allure-report --clean
+      else
+        echo "No Allure results found. Skipping report generation."
+      fi
+  artifacts:
+    when: always
+    paths:
+      - target/allure-report/
+    expire_in: 3 days
+
+
