@@ -40,23 +40,24 @@ Also, several login tests according to the requirements.
 Project Structure:
 
 ```
-Docker[docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml)
+Docker: [docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml)
 
 [DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
 
-Gitlab CI\CD[gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
+Gitlab CI\CD: [gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
 
-Fixture[conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py)
+Fixture: [conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py)
 
-Dependencies[requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
+Dependencies: [requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
 
-Utils [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
+Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
 
-Helpers[helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
+Helpers: [helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
 
-Structure [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
+Structure: [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
 ```
 Author: Diana Muhortova
+```
 
 
 
