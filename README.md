@@ -31,15 +31,13 @@ UI for site:
 [Bibki site framework](https://github.com/twelviieeeeeeee/test-python/blob/main/bibki_page.py)
 
 API Framework
-[API framework
-](https://github.com/twelviieeeeeeee/test-python/blob/main/biba_framework.py)
+[API framework](https://github.com/twelviieeeeeeee/test-python/blob/main/biba_framework.py)
 
 ```
 ```
 🧪 Tests
 
-[UI Yandex-tests
-](https://github.com/twelviieeeeeeee/test-python/blob/main/script.py)
+[UI Yandex-tests](https://github.com/twelviieeeeeeee/test-python/blob/main/script.py)
 
 [UI Automation-Exercise tests](https://github.com/twelviieeeeeeee/test-python/blob/main/test_automation_exercise.py)
 
@@ -65,6 +63,7 @@ Structure: [project_structure.txt](https://github.com/twelviieeeeeeee/test-pytho
 
 
 ```
+
 
 
 
