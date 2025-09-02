@@ -46,23 +46,18 @@ API Framework
 ```
 
 ⚙ Infrastructure
+- **Docker**: [`docker_compose.yml`](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml), [`DockerFile`](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
+- **GitLab CI/CD**: [`gitlab-ci.yml`](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
+- **Fixture**: [`conftest.py`](https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py)
+- **Dependencies**: [`requirements.txt`](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
+- **Utils**: [`user_generator.py`](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
+- **Helpers**: [`searchID.py`](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
+- **Structure**: [`project_structure.txt`](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
 
-Docker: [docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml), [DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
-
-Gitlab CI\CD: [gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
-
-Fixture: [conftest](https://github.com/twelviieeeeeeee/test-python/blob/main/conftest.py)
-
-Dependencies: [requirements.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/requirements.txt)
-
-Utils: [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/user_generator.py)
-
-Helpers: [helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
-
-Structure: [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
 
 
 ```
+
 
 
 
