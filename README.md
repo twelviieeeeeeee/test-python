@@ -1,51 +1,50 @@
+# Automation Python tests
 
+A set of UI automation tests for the [AutomationExercises](https://automationexercise.com/), demo site, implemented with Selenium + PyTest.
 
-QA Automation Frameworks
+## 📦 Stack
+- Selenium
+- PyTest
+- Faker (test data generation)
+- Allure (reports)
+- Docker
+- Helpers
+- Gitlab
+- CI|CD
+- Requests
+
+## 🖥️ Environment
+Tests were developed and executed in the following environment:
 ```
-This repository contains my training and practical projects for UI and API test automation in Python.
-The frameworks are built from scratch for various tasks, including testing the Automation Exercise website.
+- Windows 10 / Python 3.13.3
+
+- pytest 8.4.1
+
+- pluggy 1.6.0
+
+- faker 37.6.0
+
 ```
 ```
-📌 Description
-
-Language: Python
-
-Tools: Selenium, Pytest, Docker, GitLab CI/CD, Faker, Requests, Allure, helpers
-
-Testing Types: UI and API
-
-Style: Page Object Model + modular architecture
-```
-```
-⚠ Note: The repository contains only tests and frameworks.
+⚠️ Note: The repository contains only tests and frameworks.
 It includes 48 tests total: 34 for UI and 14 for API.
 Binary files and initialization files are not included.
 ```
-```
-📂 Repository Structure
+Test Coverage
 
-UI Frameworks
-[Yandex framework](https://github.com/twelviieeeeeeee/test-python/blob/main/ya_page.py)
+48 tests implemented
 
-UI for site:
-[Bibki site framework](https://github.com/twelviieeeeeeee/test-python/blob/main/bibki_page.py)
-
-API Framework
-[API framework](https://github.com/twelviieeeeeeee/test-python/blob/main/biba_framework.py)
+Also, several login tests according to the requirements.
 
 ```
+
 ```
-🧪 Tests
+Project Structure:
 
-[UI Yandex-tests](https://github.com/twelviieeeeeeee/test-python/blob/main/script.py)
-
-[UI Automation-Exercise tests](https://github.com/twelviieeeeeeee/test-python/blob/main/test_automation_exercise.py)
-
-[API tests](https://github.com/twelviieeeeeeee/test-python/blob/main/api_requests_test.py)
 ```
-```
+Docker[docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml)
 
-Docker[docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml), [DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
+[DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
 
 Gitlab CI\CD[gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
 
@@ -58,9 +57,8 @@ Utils [user-generator](https://github.com/twelviieeeeeeee/test-python/blob/main/
 Helpers[helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/searchID.py)
 
 Structure [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
-
 ```
-
+Author: Diana Muhortova
 
 
 
