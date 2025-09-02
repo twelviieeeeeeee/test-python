@@ -37,8 +37,6 @@ Test Coverage
 Also, several login tests according to the requirements.
 
 ```
-
-```
 Project Structure:
 
 ```
@@ -59,6 +57,7 @@ Helpers[helpers](https://github.com/twelviieeeeeeee/test-python/blob/main/search
 Structure [project_structure.txt](https://github.com/twelviieeeeeeee/test-python/blob/main/project_structure.txt)
 ```
 Author: Diana Muhortova
+
 
 
 
