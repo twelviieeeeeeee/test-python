@@ -42,7 +42,7 @@ Project Structure:
 ```
 Docker: [docker_compose.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/docker-compose.yml)
 
-[DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
+DockerFile: [DockerFile](https://github.com/twelviieeeeeeee/test-python/blob/main/Dockerfile)
 
 Gitlab CI\CD: [gitlab-ci.yml](https://github.com/twelviieeeeeeee/test-python/blob/main/.gitlab-ci.yml)
 
@@ -58,6 +58,7 @@ Structure: [project_structure.txt](https://github.com/twelviieeeeeeee/test-pytho
 ```
 Author: Diana Muhortova
 ```
+
 
 
 
